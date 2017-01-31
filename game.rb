@@ -53,7 +53,7 @@ loop do
     loop do
       prompt("Choose one: #{VALID_CHOICES.join(', ')}")
       prompt("Type 'r' for rock, 'p' for paper, 's' for scissors, 'sp' for spock, and 'l' for lizard")
-      choice = gets.chomp
+      choice = gets.chomp.downcase
 
       case choice
       when "r"
@@ -81,8 +81,8 @@ loop do
 
     display_results(choice, computer_choice)
 
-    player_score += player_score(choice, computer_choice, player_score)
-    computer_score += computer_score(choice, computer_choice, computer_score)
+    player_score += player_score(choice, computer_choice)
+    computer_score += computer_score(choice, computer_choice)
     prompt("Player score: #{player_score}")
     prompt("Computer score: #{computer_score}")
 
