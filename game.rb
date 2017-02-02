@@ -1,9 +1,5 @@
 VALID_CHOICES = %w(rock paper scissors spock lizard) # an array of strings
 
-def test_method
-  prompt("test message")
-end
-
 # game logic
 def win?(first, second)
   (first == 'rock' && (second == 'scissors' || second == 'lizard')) ||
@@ -39,6 +35,21 @@ def computer_score(player, computer)
   end
 end
 
+def return_choice(choice)
+  case choice
+  when "r"
+    "rock"
+  when "p"
+    "paper"
+  when "s"
+    "scissors"
+  when "sp"
+    "spock"
+  when "l"
+    "lizard"
+  end
+end
+
 def prompt(message)
   puts "=> #{message}"
 end
@@ -52,23 +63,10 @@ loop do
   loop do
     loop do
       prompt("Choose one: #{VALID_CHOICES.join(', ')}")
-      prompt("Type 'r' for rock, 'p' for paper, 's' for scissors, 'sp' for spock, and 'l' for lizard")
+      prompt("'r' rock, 'p' paper, 's' scissors, 'sp' spock, 'l' lizard")
       choice = gets.chomp.downcase
 
-      case choice
-      when "r"
-        choice = "rock"
-      when "p"
-        choice = "paper"
-      when "s"
-        choice = "scissors"
-      when "sp"
-        choice = "spock"
-      when "l"
-        choice = "lizard"
-      end
-
-      if VALID_CHOICES.include?(choice)
+      if VALID_CHOICES.include?(return_choice(choice))
         break
       else
         prompt("That's not a valid choice")
@@ -77,23 +75,23 @@ loop do
 
     computer_choice = VALID_CHOICES.sample
 
-    prompt("You chose: #{choice}; Computer chose: #{computer_choice}")
+    prompt("You: #{return_choice(choice)}; Computer: #{computer_choice}")
 
-    display_results(choice, computer_choice)
+    display_results(return_choice(choice), computer_choice)
 
-    player_score += player_score(choice, computer_choice)
-    computer_score += computer_score(choice, computer_choice)
+    player_score += player_score(return_choice(choice), computer_choice)
+    computer_score += computer_score(return_choice(choice), computer_choice)
     prompt("Player score: #{player_score}")
     prompt("Computer score: #{computer_score}")
 
-    if player_score >= 5 || computer_score >= 5
-      break
-    end
+    break if player_score >= 5 || computer_score >= 5
   end
 
+  player_score = 0
+  computer_score = 0
   prompt("Do you want to play again?")
   answer = gets.chomp
-  break unless answer.downcase.start_with?('y')
+  break unless answer.casecmp("yes").zero? || answer.casecmp("y").zero?
 end
 
 prompt("Thanks for playing! Bye!")
